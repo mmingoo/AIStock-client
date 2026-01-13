@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Button from '../components/common/Button';
-import Input from '../components/common/Input';
-import PasswordInput from '../components/common/PasswordInput';
+import Button from '../components/common/Button/Button';
+import Input from '../components/common/Input/Input';
+import PasswordInput from '../components/common/Input/PasswordInput';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');

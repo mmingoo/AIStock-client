@@ -1,8 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import LoginPage from './page/LoginPage';
 import { Route, Routes } from "react-router-dom";
 import SignupPage from './page/SignupPage';
+import ForgotPasswordPage from './page/Forgotpasswordpage';
 
 function App() {
   return (
@@ -10,7 +10,8 @@ function App() {
 
     <Route path = "/login" element = {<LoginPage/>}/>
     <Route path = "/signup" element = {<SignupPage/>}/>
-
+    <Route path="/forgot-password" element = {<ForgotPasswordPage/>}/>
+    
     </Routes>
   );
 }
