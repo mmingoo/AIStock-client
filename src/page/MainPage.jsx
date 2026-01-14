@@ -1,5 +1,5 @@
 import React from 'react';
-import MainLayout from '../components/layout/Mainlayout';
+import MainLayout from '../components/layout/MainLayout';
 import NewsCard from '../components/report/Newscard';
 import StockCard from '../components/report/StockCard';
 

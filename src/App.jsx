@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import SignupPage from './page/SignupPage';
 import ForgotPasswordPage from './page/Forgotpasswordpage';
 import MainPage from './page/MainPage';
+import MyPage from './page/MyPgae';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
     <Route path = "/signup" element = {<SignupPage/>}/>
     <Route path="/forgot-password" element = {<ForgotPasswordPage/>}/>
     <Route path='/main' element = {<MainPage/>}/>
+    <Route path='mypage' element = {<MyPage/>}/>
     
     </Routes>
   );
