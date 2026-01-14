@@ -1,0 +1,9 @@
+{
+"emmet.syntaxProfiles": {
+  "javascript": "jsx",
+  "javascriptreact": "jsx"
+},
+"emmet.includeLanguages": {
+  "javascript": "javascriptreact"
+}
+}
