@@ -1,8 +1,26 @@
 // src/components/report/StockDetailModal.jsx
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function StockDetailModal({ stock, sector, onClose }) {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   if (!stock) return null;
+
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    console.log(`${stock.ticker} 관심 종목 ${!isFavorite ? '추가' : '제거'}`);
+    // TODO: 나중에 API 연동
+  };
+
+  const handleEmailSend = () => {
+    console.log(`${stock.ticker} 분석 이메일 발송`);
+    // TODO: 이메일 발송 API 연동
+  };
+
+  const handleShare = () => {
+    console.log(`${stock.ticker} 공유`);
+    // TODO: 공유 기능 구현
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -17,14 +35,40 @@ export default function StockDetailModal({ stock, sector, onClose }) {
               {sector.sectorName} 섹터 / {sector.order}차 영향
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-3">
+            {/* 관심 종목 추가 버튼 */}
+            <button
+              onClick={handleToggleFavorite}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                isFavorite
+                  ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-5 w-5" 
+                fill={isFavorite ? "currentColor" : "none"}
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+              <span className="text-sm">
+                {isFavorite ? '관심 종목' : '관심 추가'}
+              </span>
+            </button>
+
+            {/* 닫기 버튼 */}
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* 본문 */}
@@ -61,7 +105,7 @@ export default function StockDetailModal({ stock, sector, onClose }) {
             </h3>
             <div className="space-y-3">
               {stock.relatedNews?.map((news, index) => (
-                
+                <a
                   key={index}
                   href={news.url}
                   target="_blank"
@@ -142,8 +186,31 @@ export default function StockDetailModal({ stock, sector, onClose }) {
           )}
         </div>
 
-        {/* 푸터 */}
+        {/* 푸터 - 액션 버튼 */}
         <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4">
+          <div className="flex items-center gap-3 mb-3">
+            {/* 이메일로 받기 버튼 */}
+            <button 
+              onClick={handleEmailSend}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>이 분석 이메일로 받기</span>
+            </button>
+
+            {/* 공유 버튼 */}
+            <button 
+              onClick={handleShare}
+              className="px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+          </div>
+          
           <p className="text-xs text-gray-500 text-center">
             ⚠️ 본 정보는 투자 참고용이며, 투자 판단의 책임은 본인에게 있습니다.
           </p>
