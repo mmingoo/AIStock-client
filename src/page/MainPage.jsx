@@ -469,6 +469,7 @@ export default function MainPage() {
               order={sector.order}
               stocks={sector.stocks}
               onStockClick={(stock) => handleStockClick(stock, sector)}
+              date={new Date().toISOString().split('T')[0]}
             />
           ))}
       </div>

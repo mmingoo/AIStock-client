@@ -5,6 +5,7 @@ import SignupPage from './page/SignupPage';
 import ForgotPasswordPage from './page/Forgotpasswordpage';
 import MainPage from './page/MainPage';
 import MyPage from './page/MyPgae';
+import SavedSectorsPage from './page/SavedSectorsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
     <Route path="/forgot-password" element = {<ForgotPasswordPage/>}/>
     <Route path='/main' element = {<MainPage/>}/>
     <Route path='mypage' element = {<MyPage/>}/>
+    <Route path="/saved-sectors" element={<SavedSectorsPage/>}/>
     
     </Routes>
   );
