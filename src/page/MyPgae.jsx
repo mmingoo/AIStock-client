@@ -4,7 +4,7 @@ import MainLayout from '../components/layout/MainLayout';
 import Button from '../components/common/Button/Button';
 import PasswordInput from '../components/common/Input/PasswordInput';
 import Input from '../components/common/Input/Input';
-import Tabs from '../components/common/Tabs/Tabs';
+import Tabs from '../components/common/Tabs/Tabs ';
 import ToggleSwitch from '../components/common/ToggleSwitch/ToggleSwitch';
 import ConfirmDialog from '../components/common/ConfirmDialog/ConfirmDialog';
 
