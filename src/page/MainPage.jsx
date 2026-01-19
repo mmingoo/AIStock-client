@@ -1,10 +1,10 @@
+// src/page/MainPage.jsx
 import React from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import NewsCard from '../components/report/Newscard';
-import StockCard from '../components/report/StockCard';
+import SectorCard from '../components/report/SectorCard';
+import TrendCard from '../components/report/TrendCard';
 
 export default function MainPage() {
-  // 임시 데이터 (나중에 API 연동)
   const todayDate = new Date().toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',
@@ -12,113 +12,185 @@ export default function MainPage() {
     weekday: 'long'
   });
 
-  const newsList = [
+  // 오늘의 주요 뉴스 트렌드 (임시 데이터)
+  const trends = [
+    { keyword: 'AI 반도체 수요 급증', newsCount: 15 },
+    { keyword: '연준 금리 동결 시사', newsCount: 8 },
+    { keyword: '중국 전기차 시장 회복', newsCount: 5 }
+  ];
+
+  // 섹터별 인사이트 데이터 (임시 데이터)
+  const sectors = [
     {
-      id: 1,
-      title: '연준, 금리 동결 시사... "인플레이션 둔화 확인 필요"',
-      summary: '제롬 파월 연준 의장이 기준금리 동결을 시사하며, 인플레이션이 목표치로 수렴하는지 더 지켜봐야 한다고 밝혔다.',
-      source: 'Reuters',
-      date: '2시간 전',
-      relatedStocks: ['SPY', 'QQQ', 'TLT']
+      sectorName: '반도체 장비',
+      probability: '높음',
+      order: 2,
+      stocks: [
+        {
+          ticker: 'ASML',
+          name: 'ASML',
+          reasons: [
+            'AI 반도체 생산 증가로 EUV 장비 수요 급증 예상',
+            '과거 2023년 반도체 붐 때 NVIDIA 상승 후 3개월간 45% 상승',
+            '최근 실적 발표에서 수주 증가 시사'
+          ]
+        },
+        {
+          ticker: 'AMAT',
+          name: 'Applied Materials',
+          reasons: [
+            '반도체 공정 장비 선두 기업',
+            'AI 칩 생산에 필수적인 증착/식각 장비 공급',
+            '삼성/TSMC 증설 계획과 직접 연관'
+          ]
+        },
+        {
+          ticker: '8035.T',
+          name: 'Tokyo Electron',
+          reasons: [
+            '일본 대표 반도체 장비 기업',
+            '메모리 반도체 장비 강점, AI 서버용 HBM 수요 증가'
+          ]
+        }
+      ]
     },
     {
-      id: 2,
-      title: '엔비디아, AI 칩 수요 급증으로 실적 전망 상향',
-      summary: '엔비디아가 데이터센터 AI 칩 수요 증가로 인해 다음 분기 실적 가이던스를 상향 조정했다.',
-      source: 'Bloomberg',
-      date: '3시간 전',
-      relatedStocks: ['NVDA', 'AMD', 'TSM']
+      sectorName: '클라우드 인프라',
+      probability: '중상',
+      order: 2,
+      stocks: [
+        {
+          ticker: 'DLR',
+          name: 'Digital Realty',
+          reasons: [
+            'AI 데이터센터 수요 급증',
+            '과거 2021년 클라우드 확장기에 안정적 우상향',
+            '오늘 뉴스: MS, Google의 데이터센터 확장 계획 발표'
+          ]
+        },
+        {
+          ticker: 'EQIX',
+          name: 'Equinix',
+          reasons: [
+            '글로벌 데이터센터 1위 기업',
+            'AI 워크로드 증가로 코로케이션 수요 증가'
+          ]
+        }
+      ]
     },
     {
-      id: 3,
-      title: '테슬라, 중국 판매량 전월 대비 15% 감소',
-      summary: '테슬라의 중국 내 전기차 판매량이 경쟁 심화로 인해 전월 대비 15% 감소했다.',
-      source: 'CNBC',
-      date: '5시간 전',
-      relatedStocks: ['TSLA', 'NIO', 'BYD']
+      sectorName: '전력/유틸리티',
+      probability: '중',
+      order: 3,
+      stocks: [
+        {
+          ticker: 'NEE',
+          name: 'NextEra Energy',
+          reasons: [
+            'AI 데이터센터 전력 소비 급증 (연관 효과)',
+            '재생에너지 중심, ESG 트렌드 부합',
+            '안정적 유틸리티 + 성장성 조합'
+          ]
+        }
+      ]
+    },
+    {
+      sectorName: 'AI 반도체',
+      probability: '높음',
+      order: 1,
+      stocks: [
+        {
+          ticker: 'NVDA',
+          name: 'NVIDIA',
+          reasons: [
+            '현재 AI 반도체 시장 점유율 80% 이상',
+            '데이터센터 매출 전년 대비 200% 이상 성장',
+            '오늘 뉴스: 차세대 GPU 아키텍처 발표 예정'
+          ]
+        },
+        {
+          ticker: 'AMD',
+          name: 'AMD',
+          reasons: [
+            'NVIDIA 대항마로 AI 가속기 시장 점유율 확대',
+            'MI300 시리즈로 엔터프라이즈 시장 공략'
+          ]
+        }
+      ]
     }
   ];
 
-  const stockList = [
-    {
-      symbol: 'NVDA',
-      name: '엔비디아',
-      sentiment: 'positive',
-      reason: 'AI 칩 수요 급증, 데이터센터 매출 성장 지속. 실적 가이던스 상향 조정으로 긍정적 전망.'
-    },
-    {
-      symbol: 'TSLA',
-      name: '테슬라',
-      sentiment: 'negative',
-      reason: '중국 시장 경쟁 심화로 판매량 감소. 가격 인하 압박 지속될 전망.'
-    },
-    {
-      symbol: 'AAPL',
-      name: '애플',
-      sentiment: 'neutral',
-      reason: '신제품 출시 예정이나 중국 시장 불확실성 존재. 관망세 유지 권장.'
-    },
-    {
-      symbol: 'AMD',
-      name: 'AMD',
-      sentiment: 'positive',
-      reason: 'AI 가속기 시장 점유율 확대. 엔비디아 대안으로 수요 증가 예상.'
-    }
-  ];
+  const handleStockClick = (stock) => {
+    console.log('종목 클릭:', stock);
+    // 나중에 종목 상세 페이지로 이동
+  };
 
   return (
     <MainLayout>
       {/* 페이지 헤더 */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">일간 리포트</h1>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          📊 일간 섹터 인사이트 리포트
+        </h1>
         <p className="text-sm text-gray-500">{todayDate}</p>
       </div>
 
-      {/* AI 요약 섹션 */}
-      <div className="bg-blue-50 rounded-xl p-6 mb-8">
-        <h2 className="text-sm font-semibold text-blue-600 mb-2">AI 오늘의 요약</h2>
-        <p className="text-gray-700 leading-relaxed">
-          오늘 시장은 연준의 금리 동결 시사로 전반적으로 안정세를 보였습니다. 
-          AI 반도체 섹터는 엔비디아의 실적 가이던스 상향으로 강세를 이어갔으며, 
-          전기차 섹터는 테슬라의 중국 판매 부진으로 약세를 보였습니다.
+      {/* 구분선 */}
+      <div className="border-t-2 border-gray-300 mb-6"></div>
+
+      {/* 오늘의 주요 뉴스 트렌드 */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">
+          [오늘의 주요 뉴스 트렌드]
+        </h2>
+        <div className="space-y-1">
+          {trends.map((trend, index) => (
+            <TrendCard 
+              key={index}
+              keyword={trend.keyword}
+              newsCount={trend.newsCount}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* 구분선 */}
+      <div className="border-t-2 border-gray-300 mb-6"></div>
+
+      {/* 주목할 섹터 분석 */}
+      <div className="mb-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          [주목할 섹터 분석]
+        </h2>
+        <p className="text-sm text-gray-500 mb-4">
+          ※ 상승 가능성 높은 순으로 정렬
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* 뉴스 섹션 */}
-        <div className="lg:col-span-2">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">주요 뉴스</h2>
-          <div className="space-y-4">
-            {newsList.map((news) => (
-              <NewsCard
-                key={news.id}
-                title={news.title}
-                summary={news.summary}
-                source={news.source}
-                date={news.date}
-                relatedStocks={news.relatedStocks}
-                onClick={() => console.log('뉴스 클릭:', news.id)}
-              />
-            ))}
-          </div>
-        </div>
+      {/* 섹터 카드 리스트 */}
+      <div className="space-y-6">
+        {sectors
+          .sort((a, b) => {
+            const order = { '높음': 1, '중상': 2, '중': 3, '낮음': 4 };
+            return order[a.probability] - order[b.probability];
+          })
+          .map((sector, index) => (
+            <SectorCard
+              key={index}
+              sectorName={sector.sectorName}
+              probability={sector.probability}
+              order={sector.order}
+              stocks={sector.stocks}
+              onStockClick={handleStockClick}
+            />
+          ))}
+      </div>
 
-        {/* 종목 섹션 */}
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">관련 종목</h2>
-          <div className="space-y-4">
-            {stockList.map((stock) => (
-              <StockCard
-                key={stock.symbol}
-                symbol={stock.symbol}
-                name={stock.name}
-                sentiment={stock.sentiment}
-                reason={stock.reason}
-                onClick={() => console.log('종목 클릭:', stock.symbol)}
-              />
-            ))}
-          </div>
-        </div>
+      {/* 면책 문구 */}
+      <div className="mt-12 p-4 bg-gray-100 rounded-lg">
+        <p className="text-xs text-gray-600 text-center">
+          ⚠️ 본 서비스는 투자 참고 정보를 제공하며, 투자 판단의 책임은 사용자에게 있습니다.
+        </p>
       </div>
     </MainLayout>
   );
