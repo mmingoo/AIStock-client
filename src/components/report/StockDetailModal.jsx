@@ -1,8 +1,10 @@
 // src/components/report/StockDetailModal.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function StockDetailModal({ stock, sector, onClose }) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
 
   if (!stock) return null;
 
@@ -12,9 +14,11 @@ export default function StockDetailModal({ stock, sector, onClose }) {
     // TODO: 나중에 API 연동
   };
 
-  const handleEmailSend = () => {
-    console.log(`${stock.ticker} 분석 이메일 발송`);
-    // TODO: 이메일 발송 API 연동
+  const handleViewChart = () => {
+    // 차트 페이지로 이동하면서 stock과 sector 정보 전달
+    navigate('/stock-chart', {
+      state: { stock, sector }
+    });
   };
 
   const handleShare = () => {
@@ -191,13 +195,13 @@ export default function StockDetailModal({ stock, sector, onClose }) {
           <div className="flex items-center gap-3 mb-3">
             {/* 차트 보기 버튼 */}
             <button 
-              onClick={handleEmailSend}
+              onClick={handleViewChart}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
             >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-              <span>차트 보러 가기</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+              <span>차트 & AI 분석 보기</span>
             </button>
 
           </div>
