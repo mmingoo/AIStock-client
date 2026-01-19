@@ -1,26 +1,31 @@
+// src/page/MyPage.jsx
 import React, { useState } from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import Button from '../components/common/Button/Button';
 import PasswordInput from '../components/common/Input/PasswordInput';
 import Input from '../components/common/Input/Input';
+import Tabs from '../components/common/Tabs/Tabs';
+import ToggleSwitch from '../components/common/ToggleSwitch/ToggleSwitch';
+import ConfirmDialog from '../components/common/ConfirmDialog/ConfirmDialog';
+
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState('profile');
-  
-  // 프로필 정보 (임시 데이터)
   const [nickname, setNickname] = useState('홍길동');
   const [email] = useState('hong@email.com');
-  
-  // 비밀번호 변경
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
   const [passwordErrors, setPasswordErrors] = useState({});
-  
-  // 알림 설정
   const [emailNotification, setEmailNotification] = useState(true);
-  
-  // 회원 탈퇴
   const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const tabs = [
+    { id: 'profile', label: '프로필' },
+    { id: 'password', label: '비밀번호 변경' },
+    { id: 'notification', label: '알림 설정' },
+    { id: 'delete', label: '회원 탈퇴' }
+  ];
 
   const handleNicknameSubmit = (e) => {
     e.preventDefault();
@@ -60,38 +65,21 @@ export default function MyPage() {
 
   const handleDeleteAccount = () => {
     if (deleteConfirm === '회원탈퇴') {
-      console.log('회원 탈퇴 처리');
+      setShowDeleteDialog(true);
     }
   };
 
-  const tabs = [
-    { id: 'profile', label: '프로필' },
-    { id: 'password', label: '비밀번호 변경' },
-    { id: 'notification', label: '알림 설정' },
-    { id: 'delete', label: '회원 탈퇴' }
-  ];
+  const confirmDeleteAccount = () => {
+    console.log('회원 탈퇴 처리');
+    setShowDeleteDialog(false);
+  };
 
   return (
     <MainLayout>
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-8">마이페이지</h1>
 
-        {/* 탭 메뉴 */}
-        <div className="flex border-b border-gray-200 mb-8">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 text-sm font-medium transition-colors
-                ${activeTab === tab.id 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-500 hover:text-gray-700'
-                }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
         {/* 프로필 탭 */}
         {activeTab === 'profile' && (
@@ -159,24 +147,12 @@ export default function MyPage() {
           <div className="bg-white rounded-xl p-6 border border-gray-100">
             <h2 className="text-lg font-semibold text-gray-900 mb-6">알림 설정</h2>
             
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-900">일간 뉴스 요약 이메일</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  매일 아침 전일 분석 결과를 이메일로 받아보세요.
-                </p>
-              </div>
-              <button
-                onClick={handleNotificationChange}
-                className={`relative w-12 h-6 rounded-full transition-colors
-                  ${emailNotification ? 'bg-blue-600' : 'bg-gray-300'}`}
-              >
-                <span
-                  className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform
-                    ${emailNotification ? 'right-1' : 'left-1'}`}
-                />
-              </button>
-            </div>
+            <ToggleSwitch
+              checked={emailNotification}
+              onChange={handleNotificationChange}
+              label="일간 뉴스 요약 이메일"
+              description="매일 아침 전일 분석 결과를 이메일로 받아보세요."
+            />
           </div>
         )}
 
@@ -215,6 +191,18 @@ export default function MyPage() {
           </div>
         )}
       </div>
+
+      {/* 회원 탈퇴 확인 다이얼로그 */}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        title="정말 탈퇴하시겠습니까?"
+        message="모든 데이터가 삭제되며, 복구할 수 없습니다."
+        confirmText="탈퇴"
+        cancelText="취소"
+        variant="danger"
+        onConfirm={confirmDeleteAccount}
+        onCancel={() => setShowDeleteDialog(false)}
+      />
     </MainLayout>
   );
 }
